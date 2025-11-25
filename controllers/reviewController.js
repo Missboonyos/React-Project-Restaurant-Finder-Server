@@ -7,7 +7,7 @@ exports.addReview = async (req, res) => {
         const {user_name, rating, comment} = req.body;
 
         const [result] = await db.query(
-            'INSERT INTO reviews (restaurant_id, user_name, rating, comment) VALUE (?, ?, ?, ?)',
+            'INSERT INTO reviews (restaurant_id, user_name, rating, comment) VALUES (?, ?, ?, ?)',
             [restaurant_id, user_name, rating, comment]
         )
 
@@ -38,7 +38,7 @@ exports.updateReview = async (req, res) => {
         const {rating, comment} = req.body;
 
         const [result] = await db.query(
-            'UPDATE reviews SET rating = ?, comment = ? WHEN id = ?',
+            'UPDATE reviews SET rating = ?, comment = ? WHERE id = ?',
             [rating, comment, review_id]
         )
 

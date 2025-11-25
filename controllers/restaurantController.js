@@ -4,23 +4,43 @@ const db = require('../config/database')
 exports.getAllRestaurants = async (req, res) => {
     try {
         const { category, search } = req.query;
-        let query = 'SELECT * FROM restaurants';
-        let params = [];
+        
+        console.log('Query params:', { category, search }); // Debug
 
-        if (category) {
-            query += 'WHERE category = ?';
-            params.push(category);
-        } else if (search) {
-            query += 'WHERE name LIKE ? OR address LIKE ?';
-            params.push(`%${search}%`, `%${search}%`);
+        // Case 1: Filter by category
+        if (category && category.trim() !== '') {
+            const [restaurants] = await db.query(
+                'SELECT * FROM restaurants WHERE category = ?',
+                [category]
+            );
+            console.log('Found restaurants:', restaurants.length);
+            return res.json(restaurants);
         }
-
-        const [restaurants] = await db.query(query, params);
-        res.json(restaurants);
+        
+        // Case 2: Search by name/address
+        if (search && search.trim() !== '') {
+            const [restaurants] = await db.query(
+                'SELECT * FROM restaurants WHERE name LIKE ? OR address LIKE ?',
+                [`%${search}%`, `%${search}%`]
+            );
+            console.log('Found restaurants:', restaurants.length);
+            return res.json(restaurants);
+        }
+        
+        // Case 3: Get all restaurants (no filter)
+        const [restaurants] = await db.query('SELECT * FROM restaurants');
+        console.log('Found restaurants:', restaurants.length);
+        return res.json(restaurants);
+        
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.error('Database error details:', error);
+        res.status(500).json({ 
+            error: error.message,
+            sqlMessage: error.sqlMessage,
+            sql: error.sql
+        });
     }
-}
+};
 
 // Get single restaurant with menu and reviews
 exports.getRestaurantById = async (req, res) => {
@@ -44,6 +64,7 @@ exports.getRestaurantById = async (req, res) => {
 
         res.json(restaurant)
     } catch (error) {
+        console.error('Database error:', error) // Debug log
         res.status(500).json({ error: error.message })
     }   
 }
@@ -54,7 +75,7 @@ exports.createRestaurant = async (req, res) => {
         const {name, category, latitude, longitude, address, phone, image_url } = req.body;
 
         const [result] = await db.query(
-            'INSERT INTO restaurants (name, category, latitude, longitude, address, phone, image_url) VALUE (?, ?, ?, ?, ?, ?, ?',
+            'INSERT INTO restaurants (name, category, latitude, longitude, address, phone, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [name, category, latitude, longitude, address, phone, image_url]
         )
 
@@ -63,6 +84,7 @@ exports.createRestaurant = async (req, res) => {
             id: result.insertId
         })
     } catch (error) {
+        console.error('Database error:', error)
         res.status(500).json({ error: error.message })
     }
 }
@@ -84,6 +106,7 @@ exports.updateRestaurant = async (req, res) => {
 
         res.json({ message: 'Restaurant updated'})
     } catch (error) {
+        console.error('Database error:', error)
         res.status(500).json({ error: error.message})
     }
 }
@@ -101,6 +124,7 @@ exports.deleteRestaurant = async (req, res) => {
 
         res.json({message: 'Restaurant deleted'})
     } catch (error) {
+        console.error('Database error:', error)
         res.status(500).json({error: error.message})
     }
 }

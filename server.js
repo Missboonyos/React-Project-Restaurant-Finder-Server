@@ -2,9 +2,10 @@ const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
 
-const restaurantRoutes = require('./routes/restaurants')
-const reviewRoutes = require('./routes/reviews')
-const favoriteRoutes = require('./routes/favorites')
+const restaurantRoutes = require('./routes/restaurantRoutes')
+const reviewRoutes = require('./routes/reviewRoutes')
+const favoriteRoutes = require('./routes/favoriteRoutes')
+const menusRoutes = require('./routes/menuRoutes')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use('/api/restaurants', restaurantRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/favorites', favoriteRoutes)
+app.use('/api/menus', menusRoutes)
 
 // Test Route
 app.get('/api/test', (req, res) => {

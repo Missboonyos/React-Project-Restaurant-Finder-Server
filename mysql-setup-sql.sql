@@ -85,3 +85,23 @@ INSERT INTO reviews (restaurant_id, user_name, rating, comment) VALUES
 (3, 'Lisa', 4, 'Authentic Thai food'),
 (5, 'Emma', 5, 'Love the healthy options!'),
 (6, 'Tom', 4, 'Great steaks!');
+
+-- Adding Menu Features
+CREATE TABLE menu_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    restaurant_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    -- Foreign key links this item back to the restaurant
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
+);
+
+-- Users Table
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,       -- Email must be unique for login
+    password_hash VARCHAR(255) NOT NULL,      -- Stores the SECURELY HASHED password
+    user_name VARCHAR(100) NOT NULL,          -- User's display name
+    role VARCHAR(50) DEFAULT 'user'           -- Optional role field
+);
