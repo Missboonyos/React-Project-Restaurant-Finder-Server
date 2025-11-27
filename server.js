@@ -5,7 +5,7 @@ require('dotenv').config()
 const restaurantRoutes = require('./routes/restaurantRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 const favoriteRoutes = require('./routes/favoriteRoutes')
-const menusRoutes = require('./routes/menuRoutes')
+const menuRoutes = require('./routes/menuRoutes')
 
 const app = express()
 
@@ -17,7 +17,7 @@ app.use(express.json())
 app.use('/api/restaurants', restaurantRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/favorites', favoriteRoutes)
-app.use('/api/menus', menusRoutes)
+app.use('/api/menus', menuRoutes)
 
 // Test Route
 app.get('/api/test', (req, res) => {
