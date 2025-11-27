@@ -1,10 +1,11 @@
 // Get all favorites
 const db = require('../config/database');
 
-// Get all favorites
+// Get all favorites (protected route)
 exports.getFavorites = async (req, res) => {
     try {
-        const user_id = 1; // Hardcoded for now
+        // const user_id = 1; // Hardcoded for now
+        const user_id = req.user.id; // Get from authenticated user
 
         const [favorites] = await db.query(
             `SELECT r.* FROM restaurants r
@@ -19,14 +20,15 @@ exports.getFavorites = async (req, res) => {
     }
 }
 
-// Add to favorites
+// Add to favorites (protected route)
 exports.addFavorite = async (req, res) => {
     try {
         const {restaurant_id} = req.body;
-        const user_id = 1; // Hardcoded for now
+        const user_id = req.user.id; // Get from authenticated user
+        // const user_id = 1; // Hardcoded for now
 
         await db.query(
-            'INSERT INTO favorites (restaurant_id, user_id) VALUE (?, ?)',
+            'INSERT INTO favorites (restaurant_id, user_id) VALUES (?, ?)',
             [restaurant_id, user_id]
         )
 
@@ -39,11 +41,12 @@ exports.addFavorite = async (req, res) => {
     }
 }
 
-// Remove from favorites
+// Remove from favorites (protected route)
 exports.removeFavorite = async (req, res) => {
     try {
         const {restaurant_id} = req.params;
-        const user_id = 1; // Hardcoded for now
+        const user_id = req.user.id // Get from authenticated user
+        // const user_id = 1; // Hardcoded for now
 
         const [result] = await db.query(
             'DELETE FROM favorites WHERE restaurant_id = ? AND user_id = ?',
@@ -64,7 +67,8 @@ exports.removeFavorite = async (req, res) => {
 exports.isFavorite = async (req, res) => {
     try {
         const {restaurant_id} = req.params;
-        const user_id = 1;
+        const user_id = req.user.id // Get from authenticated user
+        // const user_id = 1; // hard code for now
 
         const [result] = await db.query(
             'SELECT * FROM favorites WHERE restaurant_id = ? AND user_id = ?',

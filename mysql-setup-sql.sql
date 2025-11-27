@@ -97,11 +97,23 @@ CREATE TABLE menu_items (
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
 
--- Users Table
+-- Create Users Table
+USE restaurant_finder;
+
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,       -- Email must be unique for login
-    password_hash VARCHAR(255) NOT NULL,      -- Stores the SECURELY HASHED password
-    user_name VARCHAR(100) NOT NULL,          -- User's display name
-    role VARCHAR(50) DEFAULT 'user'           -- Optional role field
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Update favorites table to use actual user IDs
+ALTER TABLE favorites 
+MODIFY COLUMN user_id INT NOT NULL;
+
+-- Add foreign key
+ALTER TABLE favorites
+ADD CONSTRAINT fk_favorites_user
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
