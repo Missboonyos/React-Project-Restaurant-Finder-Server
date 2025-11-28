@@ -21,6 +21,7 @@ CREATE TABLE menu_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     restaurant_id INT,
     name VARCHAR(255),
+    description TEXT,
     price DECIMAL(10, 2),
     FOREIGN KEY (restaurant_id) REFERENCES restaurants(id) ON DELETE CASCADE
 );
@@ -57,25 +58,25 @@ INSERT INTO restaurants (name, category, latitude, longitude, address, phone, ra
 ('Steak House', 'Western', 13.7450, 100.5400, '999 Rama 4 Rd, Bangkok', '02-678-9012', 4.4, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400');
 
 -- Insert Menu Items
-INSERT INTO menu_items (restaurant_id, name, price) VALUES
-(1, 'Carbonara', 250.00),
-(1, 'Margherita Pizza', 320.00),
-(1, 'Lasagna', 280.00),
-(2, 'Salmon Sushi Set', 350.00),
-(2, 'Ramen', 180.00),
-(2, 'Tempura', 220.00),
-(3, 'Pad Thai', 120.00),
-(3, 'Green Curry', 150.00),
-(3, 'Tom Yum Soup', 180.00),
-(4, 'Dim Sum', 200.00),
-(4, 'Peking Duck', 450.00),
-(4, 'Fried Rice', 120.00),
-(5, 'Buddha Bowl', 180.00),
-(5, 'Vegan Burger', 220.00),
-(5, 'Smoothie Bowl', 150.00),
-(6, 'Ribeye Steak', 650.00),
-(6, 'BBQ Ribs', 450.00),
-(6, 'Caesar Salad', 180.00);
+INSERT INTO menu_items (restaurant_id, name, description, price) VALUES
+(1, 'Carbonara','Yummy Carbonara', 250.00),
+(1, 'Margherita Pizza', 'Yummy Margherita Pizza', 320.00),
+(1, 'Lasagna', 'Yummy Lasagna', 280.00),
+(2, 'Salmon Sushi Set','Yummy Salmon Sushi Set', 350.00),
+(2, 'Ramen', 'Yummy Ramen', 180.00),
+(2, 'Tempura', 'Yummy Tempura', 220.00),
+(3, 'Pad Thai','Yummy Pad Thai', 120.00),
+(3, 'Green Curry', 'Yummy Green Curry', 150.00),
+(3, 'Tom Yum Soup', 'Yummy Tom Yum Soup', 180.00),
+(4, 'Dim Sum', 'Yummy Dim Sum', 200.00),
+(4, 'Peking Duck', 'Yummy Peking Duck', 450.00),
+(4, 'Fried Rice', 'Yummy Fried Rice', 120.00),
+(5, 'Buddha Bowl', 'Yummy Buddha Bowl', 180.00),
+(5, 'Vegan Burger', 'Yummy Vegan Burger', 220.00),
+(5, 'Smoothie Bowl', 'Yummy Smoothie Bowl', 150.00),
+(6, 'Ribeye Steak', 'Yummy Ribeye Steak', 650.00),
+(6, 'BBQ Ribs', 'Yummy BBQ Ribs', 450.00),
+(6, 'Caesar Salad', 'Yummy Caesar Salad', 180.00);
 
 -- Insert Sample Reviews
 INSERT INTO reviews (restaurant_id, user_name, rating, comment) VALUES
